@@ -28,7 +28,10 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
+# Update player position
+        player.update(dt)
 
+# Render Screen
         screen.fill ("black")
         player.draw(screen)
         pygame.display.flip()
