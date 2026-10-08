@@ -2,7 +2,7 @@ import pygame
 
 from constants import * #SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
-
+from player import Player
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     print (f"Screen height: {SCREEN_HEIGHT}")
 
 
-
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
 
 # GAME LOOP START
@@ -27,7 +27,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+
+
         screen.fill ("black")
+        player.draw(screen)
         pygame.display.flip()
 
 # Set framerate to cap at 60fps
