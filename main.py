@@ -1,6 +1,6 @@
 import pygame
 
-from constants import * #SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import *
 from logger import log_state
 from player import Player
 
@@ -16,8 +16,14 @@ def main():
     print (f"Screen width: {SCREEN_WIDTH}")
     print (f"Screen height: {SCREEN_HEIGHT}")
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+
 
 
 # GAME LOOP START
@@ -29,11 +35,13 @@ def main():
                 return
 
 # Update player position
-        player.update(dt)
+        updatable.update(dt)
 
 # Render Screen
         screen.fill ("black")
-        player.draw(screen)
+        for obj in drawable:
+            obj.draw(screen)
+
         pygame.display.flip()
 
 # Set framerate to cap at 60fps
