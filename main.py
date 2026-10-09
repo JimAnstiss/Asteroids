@@ -1,9 +1,10 @@
 import pygame
+import sys
 
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from constants import *
-from logger import log_state
+from logger import log_event, log_state
 from player import Player
 
 
@@ -41,6 +42,14 @@ def main():
 
 # Update player position
         updatable.update(dt)
+
+# Do collision detection for all asteroids
+        for asteroid in asteroids:
+            if asteroid.collides_with(player):
+                log_event("player_hit")  # Log the event
+                print("Game over!")      # Notify the console
+                sys.exit()               # Terminate execution immediately
+
 
 # Render Screen
         screen.fill ("black")
