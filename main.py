@@ -64,7 +64,7 @@ def main():
                         log_event("asteroid_shot")
                         # Remove both objects from the game
                         shot.kill()
-                        asteroid.kill()
+                        asteroid.split()
 
 
 # Render Screen
