@@ -1,14 +1,17 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_SPEED, PLAYER_TURN_SPEED, PLAYER_SHOOT_SPEED
+from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_SPEED, PLAYER_TURN_SPEED, PLAYER_SHOOT_SPEED,PLAYER_SHOOT_COOLDOWN_SECONDS
 from shot import Shot
 
 class Player(CircleShape):
+
+
+
     def __init__(self, x: float, y: float):
-        # Call parent constructor with position and radius
         super().__init__(x, y, PLAYER_RADIUS)
-        # Initialize rotation angle to 0
         self.rotation = 0
+        # Create cooldown and zero
+        self.shot_cooldown: float = 0.0
 
     def triangle(self) -> list[pygame.Vector2]:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -39,6 +42,9 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:    #FIRE!
             self.shoot()
 
+    # Decrease the shot cooldown
+        self.shot_cooldown -= dt
+
     def move(self, dt: float) -> None:
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)
@@ -46,14 +52,14 @@ class Player(CircleShape):
         self.position += rotated_with_speed_vector
 
     def shoot(self) -> None:
-        # 1. Spawn a bullet right at the center coordinates of the ship
+
+    # If the current value of the timer is greater than 0, prevent shooting
+        if self.shot_cooldown > 0:
+            return
+    # Otherwise, set the timer equal to PLAYER_SHOOT_COOLDOWN_SECONDS then use existing firing code.
+        self.shot_cooldown = PLAYER_SHOOT_COOLDOWN_SECONDS
+
         bullet = Shot(self.position.x, self.position.y)
-
-        # 2. Build the direction heading (0, 1) pointing straight up/forward
         direction = pygame.Vector2(0, 1)
-
-        # 3. Orient the direction vector to match where the ship is facing
         direction = direction.rotate(self.rotation)
-
-        # 4. Propel the bullet outward by scaling it with your speed constant
         bullet.velocity = direction * PLAYER_SHOOT_SPEED
