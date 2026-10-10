@@ -54,6 +54,18 @@ def main():
                 print("Game over!")      # Notify the console
                 sys.exit()               # Terminate execution immediately
 
+# Check for Asteroid bullet collisions
+        # Loop over each asteroid
+        for asteroid in asteroids:
+            # Loop over each shot
+            for shot in shots:
+                # Check if the shot and asteroid collide
+                    if asteroid.collides_with(shot):
+                        log_event("asteroid_shot")
+                        # Remove both objects from the game
+                        shot.kill()
+                        asteroid.kill()
+
 
 # Render Screen
         screen.fill ("black")
